@@ -18,6 +18,7 @@
     "jquery": "^3.2.1",
     "bcrypt-nodejs": "^0.0.3",
     "jsonwebtoken": "^7.3.0",
+	"mongodb": "^2.2.33",
     "mongoose": "^4.12.4",
     "mongoose-paginate": "^5.0.3"
   }
