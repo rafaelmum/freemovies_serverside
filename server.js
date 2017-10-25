@@ -43,6 +43,8 @@ app.get('/', function(req, res) {
 	res.send('Moview Rental/exchange API is running at http://localhost:' + port + '/api');
 });
 
+app.post('/register', user.signup);
+
 // express router
 var apiRoutes = express.Router();
 
@@ -59,6 +61,7 @@ apiRoutes.get('/', function(req, res) {
 });
 
 
+apiRoutes.put('/password/:id', user.updatePassword); // API updates user password
 
 // kick off the server 
 app.listen(port);
