@@ -4,19 +4,21 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose    = require('mongoose');
 //Import the mongoose module
+var jwt    = require('jsonwebtoken');
+var config = require('./config');
 
-const MongoClient = require('mongodb').MongoClient;
-//Set up default mongoose connection
-var url = 'mongodb://127.0.0.1/my_database';
-MongoClient.connect(url).then((db)=> {
-console.log("Conncteddddddddddddddddd")
-db.close();
- 
-}).catch((err)=> {
-console.log(err.message);
+
+var user = require('./routes/user.js');
+
+mongoose.connect(config.database, function(err){
+	if(err){
+		console.log('Error connecting database, please check if MongoDB is running.');
+	}else{
+		console.log('Connected to database...');
+	}
 });
-
 
 
 
@@ -27,7 +29,8 @@ var port= 3001;
 //var userprofile = require('./routes/userprofile');
 
 var app = express();
-
+// used morgan to log requests to the console
+//app.use(morgan('dev'));
 // Add headers
 app.use(function (req, res, next) {
   
@@ -53,15 +56,46 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+
+//app.use(bodyParser.urlencoded({ extended: false }));
+// used body parser so we can get info from POST and/or URL parameters
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(require('body-parser').json({ type : '*/*' }));
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.post('/register', user.signup);
 app.use('/', index);
 app.use('/users', users);
 app.use('/movie', movie);
+
+
+// express router
+var apiRoutes = express.Router();
+
+app.use('/api', apiRoutes);
+
+apiRoutes.post('/login', user.login);
+
+apiRoutes.use(user.authenticate); // route middleware to authenticate and check token
+
+
+// authenticated routes
+apiRoutes.get('/', function(req, res) {
+	res.status(201).json({ message: 'Welcome to the authenticated routes!' });
+});
+
+
+apiRoutes.get('/user/:id', user.getuserDetails); // API returns user details
+apiRoutes.put('/user/:id', user.updateUser); // API updates user details
+
+apiRoutes.put('/password/:id', user.updatePassword); // API updates user password
+
+
 
 //app.use('/userprofile', users);
 
