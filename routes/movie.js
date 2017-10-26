@@ -66,5 +66,24 @@ router.get('/movies', function(req, res, next) {
     });
   
 });
+router.get('/movies/:title', function(req, res, next) {
+    var resultArray= [];
+
+  MongoClient.connect(url).then((db)=> {
+    var data=db.collection('movies').find({title: req.params.title});
+    data.forEach(function(doc, err){
+      resultArray.push(doc);
+      
+    }, function(){
+      res.send(resultArray);
+      db.close();
+    })
+  
+     
+    }).catch((err)=> {
+    console.log(err.message);
+    });
+  
+});
 
 module.exports = router;
