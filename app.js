@@ -26,6 +26,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var movie = require('./routes/movie');
 var port= 3001;
+//var port = process.env.PORT || config.serverport;
 //var userprofile = require('./routes/userprofile');
 
 var app = express();
@@ -38,10 +39,10 @@ app.use(function (req, res, next) {
       res.setHeader('Access-Control-Allow-Origin', '*');
   
       // Request methods you wish to allow
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE, OPTIONS');
   
       // Request headers you wish to allow
-      res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials");
   
       // Set to true if you need the website to include cookies in the requests sent
       // to the API (e.g. in case you use sessions)

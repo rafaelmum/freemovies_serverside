@@ -1,6 +1,6 @@
 module.exports = {
-   'serverport':5200,
+   'serverport':3001,
    'tokenexp': 3600,
    'secret': 'myComplecatedsecretkey',
-   'database': 'mongodb://localhost:27017/moviedb'
+   'database': 'mongodb://localhost:27017/rentmovie'
 };
