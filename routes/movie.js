@@ -49,7 +49,7 @@ router.post('/add', function(req, res, next) {
 
 router.get('/movies', function(req, res, next) {
   var resultArray= [];
-   
+
   MongoClient.connect(url).then((db)=> {
     var data=db.collection('movies').find();
     data.forEach(function(doc, err){
