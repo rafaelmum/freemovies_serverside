@@ -18,7 +18,8 @@ router.post('/add', function(req, res, next) {
      title:req.body.title,
      year: req.body.year,
      duration: req.body.duration,
-     owner: req.body.owner
+     owner: req.body.owner,
+     newowner: ''
    }
    MongoClient.connect(url).then((db)=> {
     db.collection('movies').insertOne(movie, function(err, result){
