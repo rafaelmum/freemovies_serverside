@@ -13,13 +13,12 @@ router.get('/', function(req, res, next) {
   
   
 });
-router.get('/add', function(req, res, next) {  
+router.post('/add', function(req, res, next) {    
    var movie={
-     id: 4,
-     title:"break",
-     year: "2007",
-     duration: 1.6,
-     owner: 'kalid'
+     title:req.body.title,
+     year: req.body.year,
+     duration: req.body.duration,
+     owner: req.body.owner
    }
    MongoClient.connect(url).then((db)=> {
     db.collection('movies').insertOne(movie, function(err, result){
