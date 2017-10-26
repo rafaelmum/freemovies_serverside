@@ -1,53 +1,66 @@
 var express = require('express');
 var mongoose = require('mongoose');
+const MongoClient = require('mongodb').MongoClient;
 
 var User = require('../models/user');
 
 var router = express.Router();
 
-//mongoose.connect('mongodb://localhost/freemovies');
+var url = 'mongodb://127.0.0.1/rentmovie';
 
-/* GET userprofile. */
-router.get('/:username', function(req, res, next) {
-  let user;
-  let movieGivenArray;
-  let movieReceivedArray;
-  let userprofile;
+/* GET user. */
+router.get('/user/:username', function(req, res, next) {
+  console.log('req.params.username: ' + req.params.username);
 
   User.findOne({username: req.params.username}, function(err, userReturned) {
     if (err) {
       return console.error(err);
     }
 
-    //user = userReturned;
-    userprofile.user = userReturned;
+    console.log('userReturned: ' + userReturned);
+
+    res.end(JSON.stringify(userReturned));
   });
+});
 
-  Movie.findOne({username: req.params.username}, function(err, moviesReturned) {
-    if (err) {
-      return console.error(err);
-    }
+/* GET movie given. */
+router.get('/movieGiven/:username', function(req, res, next) {
+  console.log('req.params.username: ' + req.params.username);
+  
+  var resultArray= [];
 
-    //movieGivenArray = moviesReturned;
-    userprofile.movieGivenArray = moviesReturned;
+  MongoClient.connect(url).then((db)=> {
+    let data = db.collection('movies').find({owner: req.params.username});
+    data.forEach(function(doc, err){
+      resultArray.push(doc);
+    }, function(){
+      console.log('resultArray: ' + resultArray);
+      res.send(resultArray);
+      db.close();
+    })
+  }).catch((err)=> {
+      console.log(err.message);
   });
+});
 
-  Movie.findOne({username: req.params.username}, function(err, moviesReturned) {
-    if (err) {
-      return console.error(err);
-    }
+/* GET movie received. */
+router.get('/movieReceived/:username', function(req, res, next) {
+  console.log('req.params.username: ' + req.params.username);
+  
+  var resultArray= [];
 
-    //movieReceivedArray = moviesReturned;
-    userprofile.movieReceivedArray = moviesReturned;
+  MongoClient.connect(url).then((db)=> {
+    let data = db.collection('movies').find({newowner: req.params.username});
+    data.forEach(function(doc, err){
+      console.log('resultArray: ' + resultArray);
+      resultArray.push(doc);
+    }, function(){
+      res.send(resultArray);
+      db.close();
+    })
+  }).catch((err)=> {
+      console.log(err.message);
   });
-
-  /*
-  userprofile.user = user;
-  userprofile.movieGivenArray = movieGivenArray;
-  userprofile.movieReceivedArray = movieReceivedArray;
-  */
-
-  res.end(JSON.stringify(userprofile));
 });
 
 module.exports = router;
