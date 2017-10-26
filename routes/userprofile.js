@@ -5,7 +5,7 @@ var User = require('../models/user');
 
 var router = express.Router();
 
-mongoose.connect('mongodb://localhost/freemovies');
+//mongoose.connect('mongodb://localhost/freemovies');
 
 /* GET userprofile. */
 router.get('/:username', function(req, res, next) {
@@ -19,7 +19,8 @@ router.get('/:username', function(req, res, next) {
       return console.error(err);
     }
 
-    user = userReturned;
+    //user = userReturned;
+    userprofile.user = userReturned;
   });
 
   Movie.findOne({username: req.params.username}, function(err, moviesReturned) {
@@ -27,7 +28,8 @@ router.get('/:username', function(req, res, next) {
       return console.error(err);
     }
 
-    movieGivenArray = moviesReturned;
+    //movieGivenArray = moviesReturned;
+    userprofile.movieGivenArray = moviesReturned;
   });
 
   Movie.findOne({username: req.params.username}, function(err, moviesReturned) {
@@ -35,12 +37,15 @@ router.get('/:username', function(req, res, next) {
       return console.error(err);
     }
 
-    movieReceivedArray = moviesReturned;
+    //movieReceivedArray = moviesReturned;
+    userprofile.movieReceivedArray = moviesReturned;
   });
 
+  /*
   userprofile.user = user;
   userprofile.movieGivenArray = movieGivenArray;
   userprofile.movieReceivedArray = movieReceivedArray;
+  */
 
   res.end(JSON.stringify(userprofile));
 });
