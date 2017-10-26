@@ -33,7 +33,8 @@ exports.signup = function(req, res, next){
             lastname: lastname,
             email: email,
             username: username,
-            password: password
+            password: password,
+            points: 0
         });
 
         oUser.save(function(err, oUser) {

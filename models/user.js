@@ -8,7 +8,8 @@ const UserSchema = new Schema({
     email: {type:String},
     username: {type:String},
     password: {type:String},
-    lastlogin: {type:Date}
+    lastlogin: {type:Date},
+    points: {type:Number}
 });
 
 // Pre-save of user's hash password to database
