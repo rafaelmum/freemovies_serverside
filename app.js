@@ -26,7 +26,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var movie = require('./routes/movie');
 var port= 3001;
-//var userprofile = require('./routes/userprofile');
+var userprofile = require('./routes/userprofile');
 
 var app = express();
 // used morgan to log requests to the console
@@ -72,6 +72,7 @@ app.post('/register', user.signup);
 app.use('/', index);
 app.use('/users', users);
 app.use('/movie', movie);
+app.use('/userprofile', userprofile);
 
 
 // express router
@@ -97,7 +98,7 @@ apiRoutes.put('/password/:id', user.updatePassword); // API updates user passwor
 
 
 
-//app.use('/userprofile', users);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
