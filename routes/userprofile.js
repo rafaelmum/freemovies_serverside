@@ -54,7 +54,7 @@ router.get('/movieReceived/:username', function(req, res, next) {
   });
 });
 
-/* Update users points. */
+/* Find and Update users points. */
 router.get('/updatepoints/:username/:movieid', function(req, res, next) {
   var resultArray = [];
   
