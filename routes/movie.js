@@ -46,7 +46,31 @@ router.post('/add', function(req, res, next) {
    });
   
 });
+router.get('/update/:name/:id',function(req, res, next) {
 
+  console.log(req.params.id + "  "+ req.params.name);
+  MongoClient.connect(url).then((db)=> {
+   
+    db.collection('movies').update(
+      {_id: ObjectId(req.params.id) },
+      {$set: {newowner:req.params.name} }
+   );
+   var resultArray= [];
+   var data=db.collection('movies').find();
+   data.forEach(function(doc, err){
+     resultArray.push(doc);
+     
+   }, function(){
+     res.send(resultArray);
+     db.close();
+   });
+
+
+    }).catch((err)=> {
+    console.log(err.message);
+    });
+
+});
 router.get('/movies', function(req, res, next) {
   var resultArray= [];
 
